@@ -5,15 +5,14 @@ export const callMSGraph = async (endpoint, accessToken) => {
     console.log(accessToken);
 
     const bearer = `Bearer ${accessToken}`;
-    const headers = {
-        "Authorization": bearer,
-        "Content-Type": 'application/json'
-    }
+    let headers = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`
+    };
 
     console.log(headers);
-    const response = await axios.get(endpoint, null, {
-        headers: headers
-    });
+    const response = await axios.get(endpoint, { headers: headers });
 
     console.log(response);
+    return response.data;
 }

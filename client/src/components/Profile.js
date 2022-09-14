@@ -15,8 +15,14 @@ const Profile = () => {
         }).then((response) => callMSGraph(graphConfig.graphMeEndpoint, response.accessToken)).then(response => setUserProfile(response));
     }, [instance]);
 
+    console.log(userProfile);
     return (
-        <div>Profile</div>
+        <>
+            <div>{userProfile.displayName}</div>
+            <div>{`${userProfile.displayName} ${userProfile.surname}`}</div>
+            <div>{userProfile.jobTitle}</div>
+            <div>{userProfile.userPrincipalName}</div>
+        </>
     )
 }
 
