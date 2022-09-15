@@ -1,8 +1,8 @@
-import { Box, Checkbox, Link, Paper, styled, Typography } from '@mui/material';
+import { Alert, Box, Checkbox, Link, Paper, Snackbar, styled, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import axios from 'axios';
-import FlashMessages from './FlashMessages';
+
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -22,14 +22,11 @@ const ItemContentBox = styled(Box)(({ theme }) => ({
 
 const AddToFavApi = 'http://localhost:5001/api/v1/addToFavList';
 
-const FlashMessageType = {
-    success: "success",
-    fail: "fail",
-};
 
 const ItemList = ({ data }) => {
-    const [success, setSuccess] = useState(false);
+    const [snackBarOpen, setSnackBarOpen] = useState(false);
     const [message, setMessage] = useState('');
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const headers = {
         'Content-Type': 'application/json',
@@ -43,16 +40,22 @@ const ItemList = ({ data }) => {
         });
 
         setMessage(response.data.message);
+        setSnackBarOpen(true);
     };
 
 
     const handleCheckedIcon = async (data) => {
-        setSuccess(true);
         addFav(data._id);
-        setSuccess(false);
+
     }
 
-    // console.log(success)
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setSnackBarOpen(false);
+    }
 
     return (
         <>
@@ -65,7 +68,10 @@ const ItemList = ({ data }) => {
                     <Typography noWrap component={Link} to={data.portal_url}>{data.portal_url}</Typography>
                 </ItemContentBox>
             </Item>
-            {success ? <FlashMessages message={message} /> : ''}
+
+            <Snackbar autoHideDuration={4000} open={snackBarOpen} onClose={handleClose}>
+                <Alert onClose={handleClose} severity='success'>{message}</Alert>
+            </Snackbar>
         </>
     )
 }

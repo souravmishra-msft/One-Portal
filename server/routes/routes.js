@@ -150,8 +150,8 @@ router.get('/search/:key', async (req, res) => {
         const searchData = await PortalsUrlModel.find(
             {
                 "$or": [
-                    { "portal_name": { $regex: req.params.key } },
-                    { "portal_url": { $regex: req.params.key } }
+                    { "portal_name": { $regex: req.params.key, $options: "$i" } },
+                    { "portal_url": { $regex: req.params.key, $options: "$i" } }
                 ]
             }
         );

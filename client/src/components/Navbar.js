@@ -1,5 +1,5 @@
 import { AuthenticatedTemplate, useMsal } from '@azure/msal-react';
-import { Api as ApiIcon, Favorite as FavoriteIcon, GitHub, Home as HomeIcon, Info, Menu as MenuIcon } from '@mui/icons-material';
+import { Api as ApiIcon, Favorite as FavoriteIcon, GitHub, Home as HomeIcon, Info, Logout, Menu as MenuIcon } from '@mui/icons-material';
 import { AppBar, Avatar, Box, Button, Divider, IconButton, Menu, MenuItem, styled, Tab, Tabs, Toolbar, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -60,7 +60,7 @@ const Navbar = () => {
 
     useEffect(() => {
         const account = instance.getActiveAccount();
-        console.log(account);
+        // console.log(account);
         setName(account.name);
     }, [instance]);
 
@@ -101,18 +101,20 @@ const Navbar = () => {
 
 
 
-
-
                 {/* Display the Avatar when size is more than sm. Also display the usermenu. */}
                 <AuthenticatedTemplate>
                     <UserBox >
                         {/* Main Navigation Bar on the Navbar */}
                         <TabsBox>
-                            {navPages.map(navPage => (
-                                <Button key={navPage} onClick={handleCloseNavMenu} sx={{ my: 2, color: '#ffff', display: 'block' }}>
-                                    <Link style={{ textDecoration: 'none', color: '#ffff' }} to={`/${navPage}`}>{navPage}</Link>
-                                </Button>
-                            ))}
+                            <Button onClick={handleCloseNavMenu} startIcon={<HomeIcon />} sx={{ my: 2, color: '#ffff', display: 'flex' }}>
+                                <Link style={{ textDecoration: 'none', color: '#ffff' }} to={`/`}>Home</Link>
+                            </Button>
+                            <Button onClick={handleCloseNavMenu} startIcon={<FavoriteIcon />} sx={{ my: 2, color: '#ffff', display: 'flex' }}>
+                                <Link style={{ textDecoration: 'none', color: '#ffff' }} to={`/favorites`}>Favorites</Link>
+                            </Button>
+                            <Button onClick={handleCloseNavMenu} startIcon={<Info />} sx={{ my: 2, color: '#ffff', display: 'flex' }}>
+                                <Link style={{ textDecoration: 'none', color: '#ffff' }} to={`/about`}>About</Link>
+                            </Button>
                         </TabsBox>
                         <Tooltip title='Open Settings'>
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -140,14 +142,14 @@ const Navbar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
             >
-                <MenuItem onClick={handleCloseUserMenu}>
+                {/* <MenuItem onClick={handleCloseUserMenu}>
                     <Typography textAlign="center" component={Link} to={'/profile'} sx={{ textDecoration: 'none', color: '#141414' }}>Profile</Typography>
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
                     <Typography textAlign="center" component={Link} to={'/account'} sx={{ textDecoration: 'none', color: '#141414' }}>Account</Typography>
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem onClick={handleCloseUserMenu}>
-                    <Button variant='text' onClick={() => handleLogout(instance)} sx={{ textDecoration: 'none', color: '#141414', textTransform: 'none' }}>Logout</Button>
+                    <Button variant='text' onClick={() => handleLogout(instance)} sx={{ textDecoration: 'none', color: '#141414', textTransform: 'none', display: 'flex', gap: 1 }}><Logout /> Logout</Button>
                 </MenuItem>
             </Menu>
 
@@ -175,20 +177,24 @@ const Navbar = () => {
                         <Typography variant='h6' ml={2} noWrap>{name}</Typography>
                     </IconButton>
                 </MenuItem>
-                {navPages.map((navPage) => (
-                    <MenuItem key={navPage} onClick={handleCloseNavMenu}>
-                        <Typography textAlign="center" component={Link} to={`/${navPage}`} sx={{ textDecoration: 'none', color: '#141414' }}>{navPage}</Typography>
-                    </MenuItem>
-                ))}
+                <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center" component={Link} to={`/`} sx={{ textDecoration: 'none', color: '#141414', display: 'flex', gap: 1 }}><HomeIcon /> Home</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center" component={Link} to={`/favorites`} sx={{ textDecoration: 'none', color: '#141414', display: 'flex', gap: 1 }}><FavoriteIcon /> Favorites</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center" component={Link} to={`/about`} sx={{ textDecoration: 'none', color: '#141414', display: 'flex', gap: 1 }}><Info /> About</Typography>
+                </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleCloseUserMenu}>
+                {/* <MenuItem onClick={handleCloseUserMenu}>
                     <Typography textAlign="center" component={Link} to={'/profile'} sx={{ textDecoration: 'none', color: '#141414' }}>Profile</Typography>
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
                     <Typography textAlign="center" component={Link} to={'/account'} sx={{ textDecoration: 'none', color: '#141414' }}>Account</Typography>
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem onClick={handleCloseUserMenu}>
-                    <Button variant='text' onClick={() => handleLogout(instance)} sx={{ textDecoration: 'none', color: '#141414', textTransform: 'none' }}>Logout</Button>
+                    <Button variant='text' onClick={() => handleLogout(instance)} sx={{ textDecoration: 'none', color: '#141414', textTransform: 'none', display: 'flex', gap: 1 }}><Logout /> Logout</Button>
                 </MenuItem>
             </Menu>
         </AppBar>

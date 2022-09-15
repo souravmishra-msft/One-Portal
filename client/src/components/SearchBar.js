@@ -1,5 +1,5 @@
 import { Search } from '@mui/icons-material';
-import { Box, InputAdornment, Stack, styled, TextField, Typography } from '@mui/material'
+import { Box, InputAdornment, Pagination, Stack, styled, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ItemList from './ItemList';
@@ -27,7 +27,9 @@ const ItemListBox = styled(Box)(({ theme }) => ({
     width: '100%',
     height: 'auto',
     margin: 10,
-    overflow: 'auto'
+    overflow: 'none',
+    // background: '#141414',
+    padding: 10,
 }));
 
 
@@ -36,17 +38,7 @@ const listItemsUrl = "http://localhost:5001/api/v1/list-urls";
 const SearchBar = () => {
     const [searchTxt, setSearchTxt] = useState();
     const [apiData, setApiData] = useState([]);
-
-
-    // useEffect(() => {
-    //     const fetchApiData = async () => {
-    //         const response = await axios.get(listItemsUrl);
-    //         setApiData(response.data.data);
-    //     };
-
-    //     fetchApiData();
-    // }, []);
-
+    const [pageNumber, setPageNumber] = useState(0);
 
     useEffect(() => {
         if (searchTxt === "" || searchTxt === undefined) {
@@ -62,6 +54,26 @@ const SearchBar = () => {
         }
     }, [searchTxt]);
 
+    const itemsPerPage = 5;
+    const pageCount = Math.ceil(apiData.length / itemsPerPage);
+    const pagesVisited = pageNumber * itemsPerPage;
+
+    const displayItems = apiData
+        .slice(pagesVisited, pagesVisited + itemsPerPage)
+        .map(item => {
+            return (<ItemList key={item._id} data={item} />)
+        });
+
+
+    // useEffect(() => {
+    //     const fetchApiData = async () => {
+    //         const response = await axios.get(listItemsUrl);
+    //         setApiData(response.data.data);
+    //     };
+
+    //     fetchApiData();
+    // }, []);
+
     return (
         <MainContainer>
             <SearchBox>
@@ -76,11 +88,20 @@ const SearchBar = () => {
 
             < ItemListBox>
                 <Stack spacing={2}>
-                    {apiData.map(d => (
+                    {/* {apiData.map(d => (
                         <ItemList key={d._id} data={d} />
-                    ))}
+                    ))} */}
+                    {displayItems}
                 </Stack>
+
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, mb: 2 }}>
+                    <Stack spacing={2}>
+                        <Pagination color='primary' count={pageCount} shape='rounded' onChange={(e, value) => setPageNumber(value)} />
+                    </Stack>
+
+                </Box>
             </ItemListBox>
+
         </MainContainer>
     )
 }

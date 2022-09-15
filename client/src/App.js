@@ -9,7 +9,7 @@ import Home from './components/Home';
 import Navbar from './components/Navbar';
 import { loginRequest } from './AuthConfig';
 import { InteractionRequiredAuthError } from '@azure/msal-browser';
-import Profile from './components/Profile';
+
 
 
 function App() {
@@ -41,9 +41,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/Favorites' element={<Favorites />} />
-        <Route path='/About' element={<About />} />
-        <Route path='/Profile' element={<Profile />} />
+        <Route path='/favorites' element={<Favorites />} />
+        <Route path='/about' element={<About />} />
       </Routes>
     </BrowserRouter>
   );
